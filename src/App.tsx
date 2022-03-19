@@ -1,25 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useParams }  from 'react-router-dom';
 import './App.css';
+import Home from './pages/home';
+import About from './pages/about';
+import Topics from './pages/topics';
+import logo  from './logo.svg';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // @ts-ignore
+    <Router basename={window.__POWERED_BY_QIANKUN__ ? '/sub-app-react' : '/'}>
+      <div className='App'>
+        <ul className='App-header'>
+          <li>
+            <Link to="/">Home</Link>|
+          </li>
+          <li>
+            <Link to="/about">About</Link>|
+          </li>
+          <li>
+            <Link to="/topics">Topics</Link>
+          </li>
+        </ul>
+      </div>
+      <Switch>
+        <Route path="/about">
+          <About/>
+        </Route>
+        <Route path="/topics">
+          <Topics/>
+        </Route>
+        <Route path="/">
+          <Home/>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

@@ -85,6 +85,7 @@ const hasJsxRuntime = (() => {
   }
 })();
 
+const { name } = paths.appPackageJson;
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
 module.exports = function (webpackEnv) {
@@ -226,6 +227,13 @@ module.exports = function (webpackEnv) {
               .replace(/\\/g, '/')
         : isEnvDevelopment &&
           (info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')),
+
+        library: `${name}-[name]`, // 微应用的包名，这里与主应用中注册的微应用名称一致
+        libraryTarget: 'umd',  // 将你的 library 暴露为所有的模块定义下都可运行的方式
+        // jsonpFunction: `webpackJsonp_${name}`, // 按需加载相关，设置为 webpackJsonp_${name},由于 package.json 中有唯一的名称，可将 output.jsonpFunction 删除
+        chunkLoadingGlobal:  `webpackJsonp_${name}`, // output.jsonpFunction 更名为 output.chunkLoadingGlobal
+        globalObject: 'window'
+      
     },
     cache: {
       type: 'filesystem',
